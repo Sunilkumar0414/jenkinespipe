@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Define the Maven home if it's not already set
+MAVEN_HOME="/path/to/maven"
+export PATH=$MAVEN_HOME/bin:$PATH
+
+# Function for building the project
+build_project() {
+    echo "Starting Maven build..."
+    mvn clean install
+    if [ $? -ne 0 ]; then
+        echo "Build failed"
+        exit 1
+    fi
+}
+
+# Function for running tests
+run_tests() {
+    echo "Running tests..."
+    mvn test
+    if [ $? -ne 0 ]; then
+        echo "Tests failed"
+        exit 1
+    fi
+}
+
+# Function for deploying the application (e.g., copying JAR files)
+deploy_application() {
+    echo "Deploying application..."
+    scp target/*.jar user@deployserver:/path/to/deploy
+    if [ $? -ne 0 ]; then
+        echo "Deployment failed"
+        exit 1
+    fi
+}
+
+# Main script execution
+build_project
+run_tests
+deploy_application
+
+# Post-actions: handle success and failure
+if [ $? -eq 0 ]; then
+    echo "Build, test, and deploy were successful!"
+else
+    echo "There was an error during the pipeline execution."
+fi
