@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Function to handle errors and exit the script
+handle_error() {
+    echo "Pipeline execution failed"
+    exit 1
+}
+
+# Stage: Practice
+echo "Stage: Practice"
+echo "This is for practice purpose only"
+
+# Stage: Build
+echo "Stage: Build"
+echo "Building the project"
+mvn clean install || handle_error
+
+# Stage: Test
+echo "Stage: Test"
+echo "Testing Maven after install"
+mvn test || handle_error
+
+# Stage: Deploy
+echo "Stage: Deploy"
+echo "Deploying after tests are complete"
+mvn deploy || handle_error
+
+# Success Message
+echo "Pipeline executed successfully"
